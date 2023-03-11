@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.StaffDoMapper" >
+      <select id="findAll" resultType="org.example.entity.StaffDo">
+        select * from staff
+          <where>
+              <choose>
+                  <when test="staffId != null and staffId != '' ">
+                      staff_id like #{staffId}
+                  </when>
+                  <when test="staffName != null and staffName !='' ">
+                      and staff_name like "%"#{staffName}"%"
+                  </when>
+                  <otherwise>
+                      and staff_id > 0
+                  </otherwise>
+              </choose>
+          </where>
+      </select>
+    
+      <delete id="delStaffById" parameterType="Integer">
+        delete from staff where staff_id = #{staffId}
+      </delete>
+
+    <delete id="delWagesById" parameterType="Integer">
+        delete from wages where wages_id = #{wagesId}
+    </delete>
+
+    <update id="updateStaff">
+        update staff
+        <set>
+            <if test="staffName != null">
+              staff_name = #{staffName},
+            </if>
+            <if test="staffAge != null">
+              staff_age = #{staffAge},
+            </if>
+            <if test="staffSex != null">
+              staff_sex = #{staffSex},
+            </if>
+            <if test="staffPhone != null">
+              staff_phone = #{staffPhone},
+            </if>
+            <if test="staffNote !=null ">
+              staff_note = #{staffNote},
+            </if>
+        </set>
+            where staff_id = #{staffId}
+      </update>
+    
+    <insert id="addStaff">
+        insert into staff(staff_name,staff_age,staff_sex,staff_phone,staff_note) values(#{staffName},#{staffAge},#{staffSex},#{staffPhone},#{staffNote})
+    </insert>
+
+    <insert id="addOneWages">
+        INSERT INTO wages (wages_note) VALUES ('新增员工')
+    </insert>
+    
+</mapper>

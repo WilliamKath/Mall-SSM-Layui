@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.UserMapper" >
+      <select id="findByUsername" resultType="org.example.entity.User">
+            SELECT * FROM user WHERE username=#{username}
+      </select>
+
+      <insert id="addUser">
+            INSERT INTO user (username,password) VALUES(#{username},#{password})
+      </insert>
+
+      <select id="existUsername" parameterType="string" resultType="boolean">
+            SELECT COUNT(1) FROM user WHERE username=#{username}
+      </select>
+</mapper>

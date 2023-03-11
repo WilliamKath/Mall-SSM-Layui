@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.StockDoMapper" >
+    <select id="findAll" resultType="org.example.entity.StockDo">
+        select * from stock
+        <where>
+            <choose>
+                <when test="stockId != null and stockId != '' ">
+                    stock_id like #{stockId}
+                </when>
+                <when test="stockName != null and stockName !='' ">
+                    and stock_name like #{stockName}
+                </when>
+                <otherwise>
+                    and stock_id > 0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <delete id="delStockById" parameterType="Integer">
+        delete from stock where stock_id = #{stockId}
+    </delete>
+
+    <delete id="delWareById" parameterType="Integer">
+        delete from ware where ware_id = #{stockId}
+    </delete>
+
+    <delete id="delWareSrcById" parameterType="Integer">
+        delete from ware_img where img_id = #{stockId}
+    </delete>
+
+    <update id="updateStock">
+        update stock
+        <set>
+            <if test="stockName != null">
+                stock_name = #{stockName},
+            </if>
+            <if test="costprice != null">
+                costprice = #{costprice},
+            </if>
+            <if test="stockStandard !=null ">
+                stock_standard = #{stockStandard},
+            </if>
+            <if test="stockQty != null">
+                stock_qty = #{stockQty},
+            </if>
+        </set>
+        where stock_id = #{stockId}
+    </update>
+
+    <insert id="addStock">
+        insert into stock(stock_name,costprice,stock_standard,stock_qty) values(#{stockName},#{costprice},#{stockStandard},#{stockQty})
+    </insert>
+    <insert id="addWare">
+        insert into ware(ware_name,retailprice) values(#{stockName},#{costprice})
+    </insert>
+    <insert id="addWareSrc">
+        INSERT INTO ware_img(img_src) VALUES( DEFAULT )
+    </insert>
+
+</mapper>

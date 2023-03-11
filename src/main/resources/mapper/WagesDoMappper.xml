@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.WagesDoMapper" >
+      <select id="findAll" resultType="org.example.entity.WagesDo">
+          SELECT wages_id,staff_name,wages_job,wages_basepay,wages_subsidy,wages_reward,wages_note FROM staff a LEFT JOIN wages b ON a.staff_id = b.wages_id
+          <where>
+              <choose>
+                  <when test="wagesId != null and wagesId != '' ">
+                      wages_id like #{wagesId}
+                  </when>
+                  <when test="staffName != null and staffName !='' ">
+                      and staff_name like "%"#{staffName}"%"
+                  </when>
+                  <otherwise>
+                      and staff_id > 0
+                  </otherwise>
+              </choose>
+          </where>
+      </select>
+
+    <update id="updateWages">
+        update wages
+        <set>
+            <if test="wagesJob != null" >
+                wages_job=#{wagesJob},
+            </if>
+            <if test="wagesBasepay != null">
+                wages_basepay=#{wagesBasepay},
+            </if>
+            <if test="wagesSubsidy != null">
+                wages_subsidy=#{wagesSubsidy},
+            </if>
+            <if test="wagesReward != null">
+                wages_reward=#{wagesReward},
+            </if>
+            <if test="wagesNote !=null">
+                wages_note=#{wagesNote}
+            </if>
+        </set>
+        where wages_id = #{wagesId}
+    </update>
+</mapper>

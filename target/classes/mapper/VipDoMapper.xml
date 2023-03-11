@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.VipDoMapper" >
+    <select id="findAll" resultType="org.example.entity.VipDo">
+        select * from vip
+        <where>
+            <choose>
+                <when test="vipId != null and vipId != '' ">
+                    vip_id like "%"#{vipId}"%"
+                </when>
+                <when test="vipName != null and vipName !='' ">
+                    and vip_name like "%"#{vipName}"%"
+                </when>
+                <otherwise>
+                    and vip_id > 0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <delete id="delVipById" parameterType="Integer">
+        delete from vip where vip_id = #{vipId}
+    </delete>
+
+    <update id="updateVip" parameterType="Integer">
+        update vip
+        <set>
+            <if test="vipName != null">
+                vip_name = #{vipName},
+            </if>
+
+            <if test="vipAge != null">
+                vip_age = #{vipAge},
+            </if>
+
+            <if test="vipSex != null">
+                vip_sex = #{vipSex},
+            </if>
+
+            <if test="vipPhone != null">
+                vip_phone = #{vipPhone},
+            </if>
+
+            <if test="vipAddress != null">
+                vip_address = #{vipAddress},
+            </if>
+
+            <if test="vipGrade !=null ">
+                vip_grade = #{vipGrade},
+            </if>
+            <if test="vipIntegral !=null ">
+                vip_integral = #{vipIntegral},
+            </if>
+
+        </set>
+        where vip_id = #{vipId}
+    </update>
+
+    <insert id="addVip">
+        insert into vip(vip_name,vip_age,vip_sex,vip_phone,vip_address,vip_grade,vip_integral) values(#{vipName},#{vipAge},#{vipSex},#{vipPhone},#{vipAddress},#{vipGrade},#{vipIntegral})
+    </insert>
+
+</mapper>

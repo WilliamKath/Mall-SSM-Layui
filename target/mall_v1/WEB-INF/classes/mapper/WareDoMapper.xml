@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.example.dao.WareDoMapper" >
+    <select id="findAll" resultType="org.example.entity.WareDo">
+        select ware_id,ware_name,retailprice rPrice,stock_standard sStandard,img_src from (ware left join stock on ware.ware_id=stock.stock_id) left join ware_img on ware.ware_id=ware_img.img_id
+        <where>
+            <choose>
+                <when test="wareId != null and wareId != '' ">
+                    ware_id like "%"#{wareId}"%"
+                </when>
+                <when test="wareName != null and wareName !='' ">
+                    and ware_name like "%"#{wareName}"%"
+                </when>
+                <otherwise>
+                    and ware_id > 0
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+
+    <delete id="delWareById" parameterType="Integer">
+        delete from ware where ware_id = #{wareId}
+    </delete>
+
+    <update id="updateWare">
+        update ware
+        <set>
+            <if test="wareName != null">
+                ware_name = #{wareName},
+            </if>
+            <if test="rPrice != null">
+                retailprice = #{rPrice},
+            </if>
+        </set>
+        where ware_id = #{wareId}
+    </update>
+
+</mapper>
